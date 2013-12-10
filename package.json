@@ -1,0 +1,58 @@
+{
+    "name": "eyeline",
+    "title": "Eyeline",
+    "description": "Track elements visible on the page",
+    "version": "0.1.0",
+    "homepage": "https://github.com/OpenBuildings/eyeline",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OpenBuildings/eyeline"
+    },
+    "bugs": "https://github.com/OpenBuildings/eyeline/issues",
+    "keywords": [
+        "visible",
+        "offset",
+        "elements",
+        "document",
+        "viewport"
+    ],
+    "author": {
+        "name": "Haralan Dobrev",
+        "email": "hkdobrev@gmail.com"
+    },
+    "maintainers": [
+        {
+            "name": "Haralan Dobrev",
+            "email": "hkdobrev@gmail.com"
+        },
+        {
+            "name": "Ivan Kerin",
+            "email": "ikerin@gmail.com"
+        },
+        {
+            "name": "Yasen Yanev",
+            "email": "yasen@openbuildings.com"
+        },
+        {
+            "name": "Emanuil Rusev",
+            "email": "hello@erusev.com"
+        }
+    ],
+    "licenses": [
+        {
+            "type": "GNU",
+            "url": "https://github.com/OpenBuildings/eyeline/blob/master/LICENSE"
+        }
+    ],
+    "dependencies": {
+        "jquery": ">=1.2.0"
+    },
+    "devDependencies": {
+        "grunt-contrib-jshint": "~0.6.0",
+        "grunt-contrib-qunit": "~0.2.0",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-uglify": "~0.2.0",
+        "grunt-contrib-watch": "~0.4.0",
+        "grunt-contrib-clean": "~0.4.0"
+    }
+}
