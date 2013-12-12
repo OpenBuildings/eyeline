@@ -54,5 +54,10 @@
         "grunt-contrib-uglify": "~0.2.0",
         "grunt-contrib-watch": "~0.4.0",
         "grunt-contrib-clean": "~0.4.0"
+    },
+    "scripts": {
+      "build": "npm install && grunt",
+      "start": "grunt watch",
+      "test": "grunt"
     }
 }
