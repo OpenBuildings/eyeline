@@ -1,4 +1,4 @@
-(function($) {
+(function( window, document, $, undefined ) {
 	/*
 		======== A Handy Little QUnit Reference ========
 		http://api.qunitjs.com/
@@ -23,40 +23,94 @@
 	module('jQuery#eyeline', {
 		// This will run before each test in this module.
 		setup: function() {
-			this.elems = $('#qunit-fixture').children();
+			this.holder = $('#long-list');
+			this.items = this.holder.children();
 		}
 	});
 
-	test('is chainable', function() {
-		expect(1);
+	test('is chainable', 1 ,function() {
 		// Not a bad test to run on collection methods.
-		strictEqual(this.elems.eyeline(), this.elems, 'should be chainable');
+		strictEqual(this.items.eyeline(), this.items, 'should be chainable');
 	});
 
-	test('is awesome', function() {
-		expect(1);
-		strictEqual(this.elems.eyeline().text(), 'awesome0awesome1awesome2', 'should be awesome');
+	test('triggers view event', 1, function() {
+
+		this.holder.one($.eyeline.events.view, 'li', function() {
+			ok(true, 'view event should be triggered');
+		});
+
+		this.items.eyeline();
 	});
 
-	module('jQuery.eyeline');
+	asyncTest('triggers view event after scroll', 1, function() {
 
-	test('is awesome', function() {
-		expect(2);
-		strictEqual($.eyeline(), 'awesome.', 'should be awesome');
-		strictEqual($.eyeline({punctuation: '!'}), 'awesome!', 'should be thoroughly awesome');
+		var last = this.items.last();
+
+		last.on($.eyeline.events.view, function() {
+			ok(true, 'view event should be triggered');
+			last.off($.eyeline.events.view);
+			last.one($.eyeline.events.view, function() {
+				ok(false, 'view event should not be triggered a second time');
+			});
+			start();
+		});
+
+		this.items.eyeline();
+		$(document).scrollTop($(document).height());
+		this.items.eyeline();
+
+		window.scrollTo(0, 0);
 	});
 
-	module(':eyeline selector', {
+
+	asyncTest('triggers view event only for visible items', 5, function() {
+		// Equals the number of expectations
+		var numberOfVisisbleElements = 5,
+			elementsChecked = 0;
+
+		this.holder.on($.eyeline.events.view, 'li', function() {
+			ok(true, 'view event should be triggered');
+			elementsChecked++;
+
+			if (elementsChecked === numberOfVisisbleElements) {
+				start();
+			}
+		});
+
+		this.items.eyeline();
+	});
+
+	module('jQuery.eyeline', {
 		// This will run before each test in this module.
 		setup: function() {
-			this.elems = $('#qunit-fixture').children();
+			this.items = $('#long-list').children();
 		}
 	});
 
-	test('is awesome', function() {
-		expect(1);
-		// Use deepEqual & .get() when comparing jQuery objects.
-		deepEqual(this.elems.filter(':eyeline').get(), this.elems.last().get(), 'knows awesome when it sees it');
+	test('isViewable', 2, function() {
+		strictEqual(
+			$.eyeline.isViewable(this.items.first()),
+			true,
+			'first element should be in the viewport'
+		);
+		
+		strictEqual(
+			$.eyeline.isViewable(this.items.last()),
+			false,
+			'last element should not be in the viewport'
+		);
 	});
 
-}(jQuery));
+	module(':viewable selector filter', {
+		// This will run before each test in this module.
+		setup: function() {
+			this.items = $('#long-list').children();
+		}
+	});
+
+	test('is :viewable', 1, function() {
+		// Use deepEqual & .get() when comparing jQuery objects.
+		deepEqual(this.items.filter(':viewable').get(0), this.items.first().get(0), 'first element should be in the viewport');
+	});
+
+}( window, window.document, window.jQuery ));
